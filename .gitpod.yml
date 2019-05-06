@@ -1,4 +1,4 @@
 ports:
 - port: 3000
 tasks:
-- command: pip install Cython pygame
+- init: pip install Cython pygame
