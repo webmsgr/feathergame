@@ -15,8 +15,10 @@ setup(
     ext_modules = ext_modules
 )
 
-built = glob.glob("game.cpython*."+ext)[0]
-print("Built .{} file at {}".format(ext,built))
+cs = glob.glob("*.c")
+built = [glob.glob("{}.cpython*.{}".format(i.split(".")[0],ext))[0] for i in cs]
+builtmess = ["{}.py -> {} -> {}".format(cs[i].split(".")[0],cs[i],built[i]) for i in range(len(cs))]
+print("Built {} .{} file(s) ({})".format(len(built),ext,','.join(builtmess)))
 
 
 def mkdir(fld):
