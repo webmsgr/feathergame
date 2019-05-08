@@ -14,7 +14,7 @@ if sys.platform.startswith("win"):
 else:
     EXT = "so"
 
-EXT_MOD = cythonize([Extension("game", ["game.py"])],compiler_directives={"language_level":"3"})
+EXT_MOD = cythonize([Extension("game", ["game.pyx"])],compiler_directives={"language_level":"3"})
 setup(
     name='FeatherGame',
     cmdclass={'build_ext': build_ext},
