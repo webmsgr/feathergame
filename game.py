@@ -1,5 +1,8 @@
+"""FeatherGame"""
+
 
 def main():
+    """Main Game"""
     print("Insert Game Code Here...")
 
 

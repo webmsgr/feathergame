@@ -1,28 +1,33 @@
+"""Build code with cpython"""
+
+
+import sys
+import glob
+import os
 from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
-import sys, glob, os
 
 if sys.platform.startswith("win"):
-    ext = "pyd"
+    EXT = "pyd"
 else:
-    ext = "so"
+    EXT = "so"
 
-ext_modules = [Extension("game",["game.py"])]
+EXT_MOD = [Extension("game", ["game.py"])]
 setup(
-    name = 'FeatherGame',
-    cmdclass = {'build_ext': build_ext},
-    ext_modules = ext_modules
+    name='FeatherGame',
+    cmdclass={'build_ext': build_ext},
+    ext_modules=EXT_MOD
 )
 
-cs = glob.glob("*.c")
-built = [glob.glob("{}.cpython*.{}".format(i.split(".")[0],ext))[0] for i in cs]
-builtmess = ["{}.py -> {} -> {}".format(cs[i].split(".")[0],cs[i],built[i]) for i in range(len(cs))]
-print("Built {} .{} file(s) ({})".format(len(built),ext,','.join(builtmess)))
+CS = glob.glob("*.c")
+BUILT = [glob.glob("{}.cpython*.{}".format(i.split(".")[0], EXT))[0] for i in CS]
+BUILT_MESSAGES = ["{}.py -> {} -> {}".format(CS[i].split(".")[0], CS[i], BUILT[i]) for i in range(len(CS))]
+print("Built {} .{} file(s) ({})".format(len(BUILT), EXT, ','.join(BUILT_MESSAGES)))
 
 
 def mkdir(fld):
+    """Make a directory"""
     if os.path.exists(fld):
         return
-    else:
-        os.mkdir(fld)
+    os.mkdir(fld)
