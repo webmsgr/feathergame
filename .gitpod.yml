@@ -1,5 +1,5 @@
 ports:
 - port: 3000
 tasks:
-- init: pip install Cython pygame
+- init: pip3 install Cython pygame
 image: gitpod/workspace-full-vnc
