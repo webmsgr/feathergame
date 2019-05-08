@@ -7,13 +7,14 @@ import os
 from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
+from Cython.Build import cythonize
 
 if sys.platform.startswith("win"):
     EXT = "pyd"
 else:
     EXT = "so"
 
-EXT_MOD = [Extension("game", ["game.py"])]
+EXT_MOD = cythonize([Extension("game", ["game.py"])])
 setup(
     name='FeatherGame',
     cmdclass={'build_ext': build_ext},
