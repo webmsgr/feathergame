@@ -10,9 +10,18 @@ ELIF UNAME_SYSNAME == "Linux":
 ELSE:
     DEF platform = "unknown"
 
-
+from libc.math cimport floor
 import pygame
 from pygame.locals import QUIT
+# gets tile that the cords x y are in
+cdef (int,int) ctile(int x, int y, int tilesize):
+    cdef (int,int) out
+    out = (<int?>floor(x/tilesize),<int?>floor(y/tilesize))
+    return out
+
+cdef (int,int) tileloc(int tx, int ty, int tilesize):
+    cdef (int,int) tilepos = (tx*tilesize,ty*tilesize)
+    return tilepos
 
 cpdef main():
     """Main Game"""
