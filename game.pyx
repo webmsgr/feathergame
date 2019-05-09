@@ -4,8 +4,11 @@
 import pygame
 from pygame.locals import QUIT
 
-def main():
+cpdef main():
     """Main Game"""
+    DEF red = (255,0,0)
+    DEF green = (0,255,0)
+    DEF blue = (0,0,255)
     background_colour = (255,255,255)
     (width, height) = (300, 200)
     screen = pygame.display.set_mode((width, height))

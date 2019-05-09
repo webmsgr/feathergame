@@ -22,7 +22,7 @@ setup(
 )
 
 CS = glob.glob("*.c")
-BUILT = [glob.glob("{}.cpython*.{}".format(i.split(".")[0], EXT))[0] for i in CS]
+BUILT = [glob.glob("{}.*.{}".format(i.split(".")[0], EXT))[0] for i in CS]
 BUILT_MESSAGES = ["{}.py -> {} -> {}".format(CS[i].split(".")[0], CS[i], BUILT[i]) for i in range(len(CS))]
 print("Built {} .{} file(s) ({})".format(len(BUILT), EXT, ','.join(BUILT_MESSAGES)))
 
