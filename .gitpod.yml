@@ -3,3 +3,4 @@ ports:
 - port: 3000
 tasks:
 - init: pip3 install Cython pygame
+- command: python3 build.py build_ext --inplace
