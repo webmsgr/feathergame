@@ -1,6 +1,16 @@
 """FeatherGame"""
 
 
+IF UNAME_SYSNAME == "Windows":
+    DEF platform = "win"
+ELIF UNAME_SYSNAME == "Darwin":
+    DEF platform = "darwin"
+ELIF UNAME_SYSNAME == "Linux":
+    DEF platform = "linux"
+ELSE:
+    DEF platform = "unknown"
+
+
 import pygame
 from pygame.locals import QUIT
 
