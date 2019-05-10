@@ -31,6 +31,8 @@ cdef draw(map,tiles,int tilesize):
             drawx,drawy = tileloc(x,y,tilesize)
             newsurface.blit(tiles[map[y][x]],(drawx,drawy))
     return newsurface
+
+
 cdef blankmap(int size,tile=""):
     cdef int i,j
     out = []
@@ -48,14 +50,19 @@ cpdef main():
     DEF blue = (0,0,255)
     DEF white = (255,255,255)
     DEF black = (0,0,0)
-    DEF sctile = 8
+    DEF sctile = 16
     DEF tilesize = 8
+    DEF tilet = (tilesize,tilesize)
     # screen is sctile/sctile tiles
     background_colour = (255,255,255)
     (width, height) = (sctile*tilesize, sctile*tilesize)
     screen = pygame.display.set_mode((width, height))
-    blanksurface = pygame.Surface((tilesize,tilesize))
-    blanksurface.fill(red)
+    # setup colored tiles
+    redtile = pygame.Surface(tilet)
+    redtile.fill(red)
+    bluetile = pygame.Surface(tilet)
+    bluetile.fill(blue)
+    # end colored tiles
     blank = blankmap(sctile)
     pygame.display.set_caption('Window')
     screen.fill(background_colour)
@@ -64,7 +71,7 @@ cpdef main():
     clock = pygame.time.Clock()
     while running:
         screen.fill(background_colour)
-        screen.blit(draw(blank,{"":blanksurface},tilesize),(0,0))
+        screen.blit(draw(blank,{"":redtile},tilesize),(0,0))
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == QUIT:
