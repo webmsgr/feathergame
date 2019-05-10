@@ -1,5 +1,5 @@
 # feathergame
-Rabies Cat Studios Feather Game
+A rpg written in python
 
 # Installing
 ## Building game from source
