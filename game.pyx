@@ -15,8 +15,7 @@ import pygame
 from pygame.locals import QUIT
 # gets tile that the cords x y are in
 cdef (int,int) ctile(int x, int y, int tilesize):
-    cdef (int,int) out
-    out = (<int?>floor(x/tilesize),<int?>floor(y/tilesize))
+    cdef (int,int) out = (<int>floor(x/tilesize),<int>floor(y/tilesize))
     return out
 
 cdef (int,int) tileloc(int tx, int ty, int tilesize):
