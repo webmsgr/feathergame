@@ -12,11 +12,13 @@ ELSE:
 
 from libc.math cimport floor
 import pygame
+cimport cpython
 from pygame.locals import QUIT
 # gets tile that the cords x y are in
 cdef (int,int) ctile(int x, int y, int tilesize):
-    cdef (int,int) out = (<int>floor(x/tilesize),<int>floor(y/tilesize))
-    return out
+    if <int>tilesize == 0 or x == 0 or y == 0:
+        return (0,0)
+    return (<int>floor(x/tilesize),<int>floor(y/tilesize))
 
 cdef (int,int) tileloc(int tx, int ty, int tilesize):
     cdef (int,int) tilepos = (tx*tilesize,ty*tilesize)
@@ -37,6 +39,12 @@ DEF blue = (0,0,255)
 DEF green = (0,255,0)
 DEF white = (255,255,255)
 DEF black = (0,0,0)
+
+cdef class Tile:
+    cdef bint up,down,right,left
+    cdef init(self,tilepic,up=False,down=False,right=False,left=False):
+        self.tilepic = tilepic
+        self.up,self.down,self.right,self.left = up,down,right,left
 
 cdef blankmap(int size,tile=""):
     cdef int i,j
