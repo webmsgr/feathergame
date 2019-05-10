@@ -25,11 +25,11 @@ cdef (int,int) tileloc(int tx, int ty, int tilesize):
 cdef draw(map,tiles,int tilesize):
     cdef int x,y,height = len(map),width = len(map[0])
     cdef int drawx,drawy
-    newsurface = pygame.Surface(width*tilesize,height*tilesize)
+    newsurface = pygame.Surface((width*tilesize,height*tilesize))
     for y in range(height):
         for x in range(width):
             drawx,drawy = tileloc(x,y,tilesize)
-            pass
+            newsurface.blit(tiles[map[y][x]],(drawx,drawy))
     return newsurface
 
 cpdef main():
@@ -37,16 +37,20 @@ cpdef main():
     DEF red = (255,0,0)
     DEF green = (0,255,0)
     DEF blue = (0,0,255)
+    DEF white = (255,255,255)
+    DEF black = (0,0,0)
     background_colour = (255,255,255)
     (width, height) = (300, 200)
     screen = pygame.display.set_mode((width, height))
+    blanksurface = pygame.Surface((8,8))
+    blanksurface.fill(red)
     pygame.display.set_caption('Window')
     screen.fill(background_colour)
     pygame.display.flip()
     running = True
     while running:
         screen.fill(background_colour)
-        screen.blit(draw([["",""],["",""]],{},8),(0,0))
+        screen.blit(draw([["",""],["",""]],{"":blanksurface},8),(0,0))#because i have no tiles prepared, this is blank
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == QUIT:
