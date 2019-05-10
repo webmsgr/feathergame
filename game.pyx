@@ -32,6 +32,11 @@ cdef draw(map,tiles,int tilesize):
             newsurface.blit(tiles[map[y][x]],(drawx,drawy))
     return newsurface
 
+DEF red = (255,0,0)
+DEF blue = (0,0,255)
+DEF green = (0,255,0)
+DEF white = (255,255,255)
+DEF black = (0,0,0)
 
 cdef blankmap(int size,tile=""):
     cdef int i,j
@@ -42,17 +47,9 @@ cdef blankmap(int size,tile=""):
             blk.append(tile)
         out.append(blk)
     return out
-cpdef main():
+cpdef main(int maxfps = 60,int sctile = 16,int tilesize = 8):
     """Main Game"""
-    DEF maxfps = 60
-    DEF red = (255,0,0)
-    DEF green = (0,255,0)
-    DEF blue = (0,0,255)
-    DEF white = (255,255,255)
-    DEF black = (0,0,0)
-    DEF sctile = 16
-    DEF tilesize = 8
-    DEF tilet = (tilesize,tilesize)
+    cdef (int,int) tilet = (tilesize,tilesize)
     # screen is sctile/sctile tiles
     background_colour = (255,255,255)
     (width, height) = (sctile*tilesize, sctile*tilesize)
