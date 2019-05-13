@@ -8,9 +8,12 @@ This project requires
 python3
 Cython
 pygame
+numpy
+Pillow
+cyrandom
 ```
 ## Cloning
-run 
+run
 ```
 git clone https://github.com/webmsgr/feathergame.git
 ```

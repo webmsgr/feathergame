@@ -9,7 +9,7 @@ from distutils.extension import Extension
 from Cython.Distutils import build_ext
 from Cython.Build import cythonize
 from Cython.Compiler import Options
-
+import numpy
 Options.embed_pos_in_docstring = True
 Options.annotate = True
 
@@ -18,7 +18,8 @@ if sys.platform.startswith("win"):
 else:
     EXT = "so"
 
-EXT_MOD = cythonize([Extension("game", ["game.pyx"])],
+EXT_MOD = cythonize([Extension("game", ["game.pyx"],
+                    include_dirs=[numpy.get_include()])],
                     compiler_directives={"language_level": "3"})
 setup(
     name='FeatherGame',

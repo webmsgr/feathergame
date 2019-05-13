@@ -1,2 +1,5 @@
 Cython
 pygame
+numpy
+Pillow
+cyrandom

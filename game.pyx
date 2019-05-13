@@ -14,7 +14,43 @@ from libc.math cimport floor
 import pygame
 cimport cpython
 import cyrandom
+import numpy
+import os
+cimport numpy
+from PIL import Image
 from pygame.locals import QUIT,MOUSEMOTION,MOUSEBUTTONDOWN
+
+cdef loadtile(nump,tile):
+    tiles = numpy.load(nump)
+    if tile in tiles.files:
+        tile = tiles[tile]
+        print(tile)
+        tile = Image.fromarray(tile)
+        data = tile.tobytes()
+        size = tile.size
+        mode = tile.mode
+        return pygame.image.fromstring(data, size, mode)
+
+cdef loadraw(nump,tile):
+    tiles = numpy.load(nump)
+    if tile in tiles.files:
+        return tiles[tile]
+
+cdef tiletonparray(tile):
+    x = pygame.surfarray.array2d(tile)
+    return x
+
+cdef savetiles(nump,tiles):
+    numpy.savez(nump,**tiles)
+
+
+cpdef numpysaveloadtest():
+    test = {"hi":numpy.array(["hi","hello"]),"hello":numpy.array(["hello","world"])}
+    savetiles("test",test)
+    assert numpy.array_equal(loadraw("test.npz","hi"),test["hi"])
+    assert numpy.array_equal(loadraw("test.npz","hello"),test["hello"])
+    os.remove("test.npz")
+    return True
 
 # gets tile that the cords x y are in
 cdef (int,int) ctile(int x, int y, int tilesize):
