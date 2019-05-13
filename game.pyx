@@ -140,5 +140,6 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     pygame.display.quit()
     pygame.quit()
 
+
 if __name__ == "__main__":
     main()
