@@ -13,7 +13,8 @@ ELSE:
 from libc.math cimport floor
 import pygame
 cimport cpython
-from pygame.locals import QUIT
+import cyrandom
+from pygame.locals import QUIT,MOUSEMOTION,MOUSEBUTTONDOWN
 # gets tile that the cords x y are in
 cdef (int,int) ctile(int x, int y, int tilesize):
     if <int>tilesize == 0 or x == 0 or y == 0:
@@ -55,10 +56,35 @@ cdef blankmap(int size,tile=""):
             blk.append(tile)
         out.append(blk)
     return out
-cpdef main(int maxfps = 60,int sctile = 16,int tilesize = 8):
+cdef text_objects(text, font):
+    textSurface = font.render(text, True, black)
+    return textSurface, textSurface.get_rect()
+
+cdef randmap(size,tiles):
+    cdef int x,y
+    out = []
+    for y in range(size):
+        tmp = []
+        for x in range(size):
+            tmp.append(cyrandom.choice(tiles))
+        out.append(tmp)
+    return out
+cdef Tile gettileatcords(x,y,size,map):
+    cdef int tx,ty
+    tx,ty = ctile(x,y,size)
+    return map[y][x]
+
+DEF mode = "mapmake" # What mode are we in? Are we making maps or playing the game?
+
+
+cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     """Main Game"""
     cdef (int,int) tilet = (tilesize,tilesize)
+    cdef int mx = 0,my = 0,mtx = 0, mty = 0
+    pygame.init()
     # screen is sctile/sctile tiles
+    txtFont = pygame.font.Font('freesansbold.ttf',15)
+    fps = 0
     background_colour = (255,255,255)
     (width, height) = (sctile*tilesize, sctile*tilesize)
     screen = pygame.display.set_mode((width, height))
@@ -67,23 +93,50 @@ cpdef main(int maxfps = 60,int sctile = 16,int tilesize = 8):
     redtile.fill(red)
     bluetile = pygame.Surface(tilet)
     bluetile.fill(blue)
+    greentile = pygame.Surface(tilet)
+    greentile.fill(green)
+    blacktile = pygame.Surface(tilet)
+    blacktile.fill(black) # may be redundent
+    whitetile = pygame.Surface(tilet)
+    whitetile.fill(white)
     # end colored tiles
-    blank = blankmap(sctile)
+    tiles = {"white":whitetile,"black":blacktile,"red":redtile,"blue":bluetile,"green":greentile}
+    tileslist = [i for i in tiles]
     pygame.display.set_caption('Window')
     screen.fill(background_colour)
     pygame.display.flip()
     running = True
     clock = pygame.time.Clock()
+    IF mode == "mapmake":
+        mp = blankmap(sctile,"white") # make a blank map
+    ELSE:
+        mp = randmap(sctile,tileslist) # load map code goes here
     while running:
         screen.fill(background_colour)
-        screen.blit(draw(blank,{"":redtile},tilesize),(0,0))
+        screen.blit(draw(mp,tiles,tilesize),(0,0))
+        TextSurf, TextRect = text_objects(str(fps), txtFont)
+        TextRect.topleft = (0,0)
+        screen.blit(TextSurf, TextRect)
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
-                print(fps)
+            if event.type == MOUSEMOTION:
+                mx,my = event.pos
+                mtx,mty = ctile(mx,my,tilesize)
+            if event.type == MOUSEBUTTONDOWN:
+                try:
+                    button = {3:"right",1:"left"}[event.button]
+                except KeyError:
+                    print("Ignoring Mouse Button {}".format(event.button))
+                    continue
+                if button == "left":
+                    mp[mty][mtx] = "black"
+                elif button == "right":
+                    mp[mty][mtx] = "white"
         clock.tick(maxfps)
-        fps = clock.get_fps()
+        fps = round(clock.get_fps())
+
     pygame.display.quit()
     pygame.quit()
 
