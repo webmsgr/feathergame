@@ -15,9 +15,10 @@ import pygame
 cimport cpython
 import cyrandom
 from pygame.locals import QUIT,MOUSEMOTION,MOUSEBUTTONDOWN
+
 # gets tile that the cords x y are in
 cdef (int,int) ctile(int x, int y, int tilesize):
-    if <int>tilesize == 0 or x == 0 or y == 0:
+    if tilesize == 0 or x == 0 or y == 0:
         return (0,0)
     return (<int>floor(x/tilesize),<int>floor(y/tilesize))
 
