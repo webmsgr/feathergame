@@ -18,7 +18,9 @@ import numpy
 import os
 cimport numpy
 from PIL import Image
-from pygame.locals import QUIT,MOUSEMOTION,MOUSEBUTTONDOWN
+from copy import deepcopy,copy
+from pygame.locals import QUIT,MOUSEMOTION,MOUSEBUTTONDOWN, KEYDOWN
+from pygame import K_s,K_l
 
 cdef loadtile(nump,tile):
     tiles = numpy.load(nump)
@@ -41,7 +43,8 @@ cdef tiletonparray(tile):
     return x
 
 cdef savetiles(nump,tiles):
-    numpy.savez(nump,**tiles)
+    nt = {x:tiletonparray(tiles[x]) for x in tiles}
+    numpy.savez(nump,**nt)
 
 
 cpdef numpysaveloadtest():
@@ -62,14 +65,14 @@ cdef (int,int) tileloc(int tx, int ty, int tilesize):
     cdef (int,int) tilepos = (tx*tilesize,ty*tilesize)
     return tilepos
 
-cdef draw(map,tiles,int tilesize):
+cdef draw(map,int tilesize):
     cdef int x,y,height = len(map),width = len(map[0])
     cdef int drawx,drawy
     newsurface = pygame.Surface((width*tilesize,height*tilesize))
     for y in range(height):
         for x in range(width):
             drawx,drawy = tileloc(x,y,tilesize)
-            newsurface.blit(tiles[map[y][x]],(drawx,drawy))
+            newsurface.blit(map[y][x],(drawx,drawy))
     return newsurface
 
 DEF red = (255,0,0)
@@ -97,6 +100,39 @@ cdef text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
 
+cdef loadmap(mapname):
+    mapdata = numpy.load(mapname+".npz")
+    tiles = mapdata["tiles"]
+    map = mapdata["map"]
+    tilesneeded = []
+    for tile in tiles:
+        a = loadtile("tiles.npz",tile)
+        tilesneeded.append(a)
+    newmap = map.copy()
+    cdef int x,y
+    for y in range(len(map)):
+        for x in range(len(map[0])):
+            newmap[y][x] = tilesneeded[newmap[y][x]]
+    return map
+
+def savemap(map,filename):
+    tiles = []
+    cdef int x,y
+    new = [[i.copy() for i in z] for z in map]
+    for y in range(len(map)):
+        for x in range(len(map[0])):
+            tl = map[y][x]
+            if tl in tiles:
+                new[y][x] = tiles.index(tl)
+            else:
+                tiles.append(tl)
+                new[y][x] = tiles.index(tl)
+    newtiles = copy(tiles)
+    for tile in tiles:
+        newtiles[tiles.index(tile)] = tiletonparray(tile)
+    numpy.savez(filename, tiles=newtiles, map=new)
+
+
 cdef randmap(size,tiles):
     cdef int x,y
     out = []
@@ -106,11 +142,10 @@ cdef randmap(size,tiles):
             tmp.append(cyrandom.choice(tiles))
         out.append(tmp)
     return out
-cdef Tile gettileatcords(x,y,size,map):
+cdef gettileatcords(x,y,size,map):
     cdef int tx,ty
     tx,ty = ctile(x,y,size)
     return map[y][x]
-
 DEF mode = "mapmake" # What mode are we in? Are we making maps or playing the game?
 
 
@@ -137,20 +172,18 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     whitetile = pygame.Surface(tilet)
     whitetile.fill(white)
     # end colored tiles
-    tiles = {"white":whitetile,"black":blacktile,"red":redtile,"blue":bluetile,"green":greentile}
-    tileslist = [i for i in tiles]
     pygame.display.set_caption('Window')
     screen.fill(background_colour)
     pygame.display.flip()
     running = True
     clock = pygame.time.Clock()
     IF mode == "mapmake":
-        mp = blankmap(sctile,"white") # make a blank map
+        mp = blankmap(sctile,whitetile) # make a blank map
     ELSE:
-        mp = randmap(sctile,tileslist) # load map code goes here
+        mp = randmap(sctile,[blacktile,whitetile]) # load map code goes here
     while running:
         screen.fill(background_colour)
-        screen.blit(draw(mp,tiles,tilesize),(0,0))
+        screen.blit(draw(mp,tilesize),(0,0))
         TextSurf, TextRect = text_objects(str(fps), txtFont)
         TextRect.topleft = (0,0)
         screen.blit(TextSurf, TextRect)
@@ -168,9 +201,14 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
                     print("Ignoring Mouse Button {}".format(event.button))
                     continue
                 if button == "left":
-                    mp[mty][mtx] = "black"
+                    mp[mty][mtx] = blacktile
                 elif button == "right":
-                    mp[mty][mtx] = "white"
+                    mp[mty][mtx] = whitetile
+            if event.type == KEYDOWN:
+                if event.key == K_s:
+                    savemap(mp,"testmap")
+                if event.key == K_l:
+                    mp = loadmap("testmap")
         clock.tick(maxfps)
         fps = round(clock.get_fps())
 
