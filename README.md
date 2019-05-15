@@ -4,14 +4,13 @@ A rpg written in python
 # Installing
 ## Requirements
 This project requires
-```
-python3
-Cython
-pygame
-numpy
-Pillow
-cyrandom
-```
+
++ python3
++ Cython
++ pygame
++ numpy
++ Pillow _Working on removing this dependancy_
++ cyrandom
 ## Cloning
 ```
 git clone https://github.com/webmsgr/feathergame.git
