@@ -9,7 +9,7 @@ This project requires
 + Cython
 + pygame
 + numpy
-+ Pillow _Working on removing this dependancy_
++ Pillow _(Working on removing this dependancy)_
 + cyrandom
 ## Cloning
 ```
