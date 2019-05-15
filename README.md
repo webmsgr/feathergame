@@ -21,8 +21,10 @@ First you install requirements.txt using
 ```
 pip install -r requirements.txt
 ```
-Then run run.sh if you are on anything but windows.
-If you are on windows, build the game using 
+### Anything but windows
+Simply run run.sh or build.sh if you dont want the game to autostart
+### Windows
+Build the game using 
 ```
 py -3 build.py build_ext --inplace
 ``` 
