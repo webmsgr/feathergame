@@ -16,22 +16,12 @@ cimport cpython
 import cyrandom
 import numpy
 import os
+import time
 cimport numpy
 from PIL import Image
 from copy import deepcopy,copy
 from pygame.locals import QUIT,MOUSEMOTION,MOUSEBUTTONDOWN, KEYDOWN
 from pygame import K_s,K_l
-
-cdef loadtile(nump,tile):
-    tiles = numpy.load(nump)
-    if tile in tiles.files:
-        tile = tiles[tile]
-        print(tile)
-        tile = Image.fromarray(tile)
-        data = tile.tobytes()
-        size = tile.size
-        mode = tile.mode
-        return pygame.image.fromstring(data, size, mode)
 
 cdef loadraw(nump,tile):
     tiles = numpy.load(nump)
@@ -99,26 +89,33 @@ cdef blankmap(int size,tile=""):
 cdef text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
+cdef nparraytotile(arra):
+    return pygame.surfarray.make_surface(arra)
 
-cdef loadmap(mapname):
+
+cdef loadmap(mapname,tilesloaded=[]):
     mapdata = numpy.load(mapname+".npz")
     tiles = mapdata["tiles"]
+    tiles = tiles.tolist()
+    nt = copy(tiles)
+    cdef int index
+    for b in tiles:
+        index = nt.index(b)
+        npr = numpy.array(tiles[index])
+        nt[index] = nparraytotile(npr)
+        tilesloaded.append(nt[index])
     map = mapdata["map"]
-    tilesneeded = []
-    for tile in tiles:
-        a = loadtile("tiles.npz",tile)
-        tilesneeded.append(a)
-    newmap = map.copy()
+    newmap = map.tolist()
     cdef int x,y
     for y in range(len(map)):
         for x in range(len(map[0])):
-            newmap[y][x] = tilesneeded[newmap[y][x]]
-    return map
+            newmap[y][x] = nt[newmap[y][x]]
+    return newmap,tilesloaded
 
 def savemap(map,filename):
     tiles = []
     cdef int x,y
-    new = [[i.copy() for i in z] for z in map]
+    new = numpy.array(map).tolist()
     for y in range(len(map)):
         for x in range(len(map[0])):
             tl = map[y][x]
@@ -149,6 +146,7 @@ cdef gettileatcords(x,y,size,map):
 DEF mode = "mapmake" # What mode are we in? Are we making maps or playing the game?
 
 
+
 cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     """Main Game"""
     cdef (int,int) tilet = (tilesize,tilesize)
@@ -157,6 +155,7 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     # screen is sctile/sctile tiles
     txtFont = pygame.font.Font('freesansbold.ttf',15)
     fps = 0
+    tl = []
     background_colour = (255,255,255)
     (width, height) = (sctile*tilesize, sctile*tilesize)
     screen = pygame.display.set_mode((width, height))
@@ -206,9 +205,15 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
                     mp[mty][mtx] = whitetile
             if event.type == KEYDOWN:
                 if event.key == K_s:
+                    s = time.time()
                     savemap(mp,"testmap")
+                    e = time.time()
+                    print("Saving took {} ms".format(e-s))
                 if event.key == K_l:
-                    mp = loadmap("testmap")
+                    s = time.time()
+                    mp,tl = loadmap("testmap",tl)
+                    e = time.time()
+                    print("Loading took {} ms".format(e-s))
         clock.tick(maxfps)
         fps = round(clock.get_fps())
 
