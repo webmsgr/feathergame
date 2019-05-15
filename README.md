@@ -10,6 +10,7 @@ This project requires
 + numpy
 + Pillow _(Working on removing this dependancy)_
 + cyrandom
+
 ## Cloning
 ```
 git clone https://github.com/webmsgr/feathergame.git
