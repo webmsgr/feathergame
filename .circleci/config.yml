@@ -52,7 +52,12 @@ jobs:
             if [ ! -f *.so ]; then 
             exit 1
             fi
+            if [ -f *.so]; then
+            mkdir testout
+            cp *.so testout/
+            fi
+            
 
       - store_artifacts:
-          path: .
+          path: testout
           destination: test-output
