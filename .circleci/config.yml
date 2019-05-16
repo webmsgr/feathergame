@@ -54,5 +54,5 @@ jobs:
             fi
 
       - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          path: .
+          destination: test-output
