@@ -92,7 +92,8 @@ cdef text_objects(text, font):
 cdef nparraytotile(arra):
     return pygame.surfarray.make_surface(arra)
 
-
+# @todo make loadmap use loaded tiles and make tile file
+# @body add new tile file
 cdef loadmap(mapname,tilesloaded=[]):
     mapdata = numpy.load(mapname+".npz")
     tiles = mapdata["tiles"]
@@ -149,6 +150,8 @@ DEF mode = "mapmake" # What mode are we in? Are we making maps or playing the ga
 
 cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     """Main Game"""
+    # @todo add load all tiles/make default tiles
+    # @body should be easy
     cdef (int,int) tilet = (tilesize,tilesize)
     cdef int mx = 0,my = 0,mtx = 0, mty = 0
     pygame.init()
