@@ -36,5 +36,4 @@ then run Feathergame.py
 # To contribute
 To contribute, fork the repo and add your changes. Then submit a pull request.
 # License
-<p align = "center"
-[<img width="88" height="31" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png">](http://creativecommons.org/licenses/by-nc-sa/4.0/) <br/> This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/)</p>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
