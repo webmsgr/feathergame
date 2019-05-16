@@ -31,3 +31,6 @@ then run Feathergame.py
 
 # Gitpod
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/webmsgr/feathergame)
+
+# To contribute
+To contribute, fork the repo and add your changes. Then submit a pull request.
