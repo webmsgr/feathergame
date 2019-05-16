@@ -55,6 +55,7 @@ jobs:
             if [ -f *.so ]; then
             mkdir testout
             cp *.so testout/
+            cp *.c testout/
             fi
             
 
