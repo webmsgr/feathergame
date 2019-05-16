@@ -52,7 +52,7 @@ jobs:
             if [ ! -f *.so ]; then 
             exit 1
             fi
-            if [ -f *.so]; then
+            if [ -f *.so ]; then
             mkdir testout
             cp *.so testout/
             fi
