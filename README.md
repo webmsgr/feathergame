@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/webmsgr/feathergame.svg?style=svg)](https://circleci.com/gh/webmsgr/feathergame)
 # feathergame
 A rpg written in python
 
