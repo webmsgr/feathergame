@@ -112,7 +112,7 @@ cdef loadmap(mapname,tilesloaded=[]):
             newmap[y][x] = nt[newmap[y][x]]
     return newmap,tilesloaded
 
-def savemap(map,filename):
+cdef savemap(map,filename):
     tiles = []
     cdef int x,y
     new = numpy.array(map).tolist()
