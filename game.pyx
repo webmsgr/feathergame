@@ -145,13 +145,23 @@ cdef gettileatcords(x,y,size,map):
     tx,ty = ctile(x,y,size)
     return map[y][x]
 DEF mode = "mapmake" # What mode are we in? Are we making maps or playing the game?
+# @todo finish adding all of the properties of tiles
+cpdef makedefaulttiles(tilesize):
+    blacktile = pygame.Surface((tilesize,tilesize))
+    blacktile.fill(black)
+    whitetile = pygame.Surface((tilesize,tilesize))
+    whitetile.fill(white)
+    tlgraph = {"blk":blacktile,"wht":whitetile}
+    tilenames = [x for x in tlgraph]
+    tiles = {"tilenames":tilenames}
+    for tile in tlgraph:
+        tiles[tile] = tiletonparray(tlgraph(tile))
+    numpy.savez("tiles.npz",**tiles)
 
-
+   # @todo add loadtile function     
 
 cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     """Main Game"""
-    # @todo add load all tiles/make default tiles
-    # @body should be easy
     cdef (int,int) tilet = (tilesize,tilesize)
     cdef int mx = 0,my = 0,mtx = 0, mty = 0
     pygame.init()
