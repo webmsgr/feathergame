@@ -49,6 +49,7 @@ jobs:
           command: |
             . venv/bin/activate
             python build.py build_ext --inplace
+            if [ ! -f *.so ]; then exit 1
 
       - store_artifacts:
           path: test-reports
