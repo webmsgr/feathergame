@@ -147,11 +147,14 @@ cdef gettileatcords(x,y,size,map):
 DEF mode = "mapmake" # What mode are we in? Are we making maps or playing the game?
 # @todo finish adding all of the properties of tiles
 cpdef makedefaulttiles(tilesize):
-    blacktile = pygame.Surface((tilesize,tilesize))
+    tilesize = (tilesize,tilesize)
+    blacktile = pygame.Surface(tilesize)
     blacktile.fill(black)
-    whitetile = pygame.Surface((tilesize,tilesize))
+    whitetile = pygame.Surface(tilesize)
     whitetile.fill(white)
-    tlgraph = {"blk":blacktile,"wht":whitetile}
+    redtile = pygame.Surface(tilesize)
+    redtile.fill(red)
+    tlgraph = {"blk":blacktile,"wht":whitetile,"red":redtile}
     tiles = {}
     for tile in tlgraph:
         tiles[tile] = tiletonparray(tlgraph[tile])
@@ -182,16 +185,16 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     (width, height) = (sctile*tilesize, sctile*tilesize)
     screen = pygame.display.set_mode((width, height))
     # setup colored tiles
-    redtile = pygame.Surface(tilet)
-    redtile.fill(red)
-    bluetile = pygame.Surface(tilet)
-    bluetile.fill(blue)
-    greentile = pygame.Surface(tilet)
-    greentile.fill(green)
-    blacktile = pygame.Surface(tilet)
-    blacktile.fill(black) # may be redundent
-    whitetile = pygame.Surface(tilet)
-    whitetile.fill(white)
+    # redtile = pygame.Surface(tilet)
+    # redtile.fill(red)
+    # bluetile = pygame.Surface(tilet)
+    # bluetile.fill(blue)
+    # greentile = pygame.Surface(tilet)
+    # greentile.fill(green)
+    # blacktile = pygame.Surface(tilet)
+    # blacktile.fill(black) # may be redundent
+    # whitetile = pygame.Surface(tilet)
+    # whitetile.fill(white)
     # end colored tiles
     pygame.display.set_caption('Window')
     screen.fill(background_colour)
