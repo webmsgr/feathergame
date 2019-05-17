@@ -92,11 +92,9 @@ cdef text_objects(text, font):
 cdef nparraytotile(arra):
     return pygame.surfarray.make_surface(arra)
 
-# @todo make loadmap use loaded tiles and make tile file
-# @body add new tile file
 cdef loadmap(mapname,ltiles={}):
     mapdata = numpy.load(mapname+".npz")
-    tiles = mapdata["tiles"]
+    tiles = mapdata["tiles"].tolist()
     ntile = copy(tiles)
     for tile in tiles:
         ntile[tiles.index(tile)] = ltiles[tile]
@@ -117,7 +115,6 @@ cdef lookuptile(arr,tiles):
             return i
     return i
 
-# @todo FIX SAVING AND LOADING
 cdef savemap(map,filename,ltiles):
     tiles = []
     cdef int x,y
@@ -202,7 +199,10 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     running = True
     clock = pygame.time.Clock()
     IF mode == "mapmake":
-        mp = blankmap(sctile,whitetile) # make a blank map
+        try:
+            mp = loadmap("testmap",tiles)
+        except OSError:
+            mp = blankmap(sctile,tiles["wht"])
     ELSE:
         mp = randmap(sctile,[blacktile,whitetile]) # load map code goes here
     while running:
@@ -215,6 +215,7 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
+                savemap(mp,"testmap",tiles)
             if event.type == MOUSEMOTION:
                 mx,my = event.pos
                 mtx,mty = ctile(mx,my,tilesize)
@@ -225,9 +226,9 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
                     print("Ignoring Mouse Button {}".format(event.button))
                     continue
                 if button == "left":
-                    mp[mty][mtx] = blacktile
+                    mp[mty][mtx] = tiles["blk"]
                 elif button == "right":
-                    mp[mty][mtx] = whitetile
+                    mp[mty][mtx] = tiles["wht"]
             if event.type == KEYDOWN:
                 if event.key == K_s:
                     s = time.time()
