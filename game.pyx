@@ -97,7 +97,10 @@ cdef loadmap(mapname,ltiles={}):
     tiles = mapdata["tiles"].tolist()
     ntile = copy(tiles)
     for tile in tiles:
-        ntile[tiles.index(tile)] = ltiles[tile]
+        try:
+            ntile[tiles.index(tile)] = ltiles[tile]
+        except ValueError:
+            raise ValueError("Tile not found: {}".format(tile))
     tiles = ntile
     map = mapdata["map"]
     newmap = map.tolist()
