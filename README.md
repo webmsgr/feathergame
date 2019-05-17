@@ -1,6 +1,10 @@
-# feathergame
-[![CircleCI](https://circleci.com/gh/webmsgr/feathergame.svg?style=svg)](https://circleci.com/gh/webmsgr/feathergame)  
+
+
+# feathergame 
 A rpg written in python
+
+#### Builds
+[![Build Status](https://semaphoreci.com/api/v1/webmsgr/feathergame/branches/master/badge.svg)](https://semaphoreci.com/webmsgr/feathergame) [![CircleCI](https://circleci.com/gh/webmsgr/feathergame.svg?style=svg)](https://circleci.com/gh/webmsgr/feathergame)
 
 # Requirements
 This project requires
