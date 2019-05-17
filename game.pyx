@@ -94,41 +94,44 @@ cdef nparraytotile(arra):
 
 # @todo make loadmap use loaded tiles and make tile file
 # @body add new tile file
-cdef loadmap(mapname,tilesloaded=[]):
+cdef loadmap(mapname,ltiles={}):
     mapdata = numpy.load(mapname+".npz")
     tiles = mapdata["tiles"]
-    tiles = tiles.tolist()
-    nt = copy(tiles)
-    cdef int index
-    for b in tiles:
-        index = nt.index(b)
-        npr = numpy.array(tiles[index])
-        nt[index] = nparraytotile(npr)
-        tilesloaded.append(nt[index])
+    ntile = copy(tiles)
+    for tile in tiles:
+        ntile[tiles.index(tile)] = ltiles[tile]
+    tiles = ntile
     map = mapdata["map"]
     newmap = map.tolist()
     cdef int x,y
     for y in range(len(map)):
         for x in range(len(map[0])):
-            newmap[y][x] = nt[newmap[y][x]]
-    return newmap,tilesloaded
+            newmap[y][x] = tiles[newmap[y][x]]
+    return newmap
 
-cdef savemap(map,filename):
+cdef lookuptile(arr,tiles):
+    for i in tiles:
+        print(i)
+        print(tiles[i])
+        if numpy.array_equal(tiletonparray(tiles[i]),arr):
+            return i
+    return i
+
+# @todo FIX SAVING AND LOADING
+cdef savemap(map,filename,ltiles):
     tiles = []
     cdef int x,y
     new = numpy.array(map).tolist()
     for y in range(len(map)):
         for x in range(len(map[0])):
             tl = map[y][x]
+            tl = lookuptile(tiletonparray(tl),ltiles)
             if tl in tiles:
                 new[y][x] = tiles.index(tl)
             else:
                 tiles.append(tl)
                 new[y][x] = tiles.index(tl)
-    newtiles = copy(tiles)
-    for tile in tiles:
-        newtiles[tiles.index(tile)] = tiletonparray(tile)
-    numpy.savez(filename, tiles=newtiles, map=new)
+    numpy.savez(filename, tiles=tiles, map=new)
 
 
 cdef randmap(size,tiles):
@@ -152,14 +155,19 @@ cpdef makedefaulttiles(tilesize):
     whitetile = pygame.Surface((tilesize,tilesize))
     whitetile.fill(white)
     tlgraph = {"blk":blacktile,"wht":whitetile}
-    tilenames = [x for x in tlgraph]
-    tiles = {"tilenames":tilenames}
+    tiles = {}
     for tile in tlgraph:
-        tiles[tile] = tiletonparray(tlgraph(tile))
+        tiles[tile] = tiletonparray(tlgraph[tile])
     numpy.savez("tiles.npz",**tiles)
 
-   # @todo add loadtile function     
-
+   # @todo add loadtile function
+cdef loadtiles():
+    tiles = numpy.load("tiles.npz")
+    nt = {}
+    names = tiles.files
+    for tile in names:
+        nt[tile] = nparraytotile(tiles[tile])
+    return nt
 cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     """Main Game"""
     cdef (int,int) tilet = (tilesize,tilesize)
@@ -168,7 +176,11 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     # screen is sctile/sctile tiles
     txtFont = pygame.font.Font('freesansbold.ttf',15)
     fps = 0
-    tl = []
+    if "tiles.npz" in os.listdir():
+        tiles = loadtiles()
+    else:
+        makedefaulttiles(tilesize)
+        tiles = loadtiles()
     background_colour = (255,255,255)
     (width, height) = (sctile*tilesize, sctile*tilesize)
     screen = pygame.display.set_mode((width, height))
@@ -219,12 +231,12 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
             if event.type == KEYDOWN:
                 if event.key == K_s:
                     s = time.time()
-                    savemap(mp,"testmap")
+                    savemap(mp,"testmap",tiles)
                     e = time.time()
                     print("Saving took {} ms".format(e-s))
                 if event.key == K_l:
                     s = time.time()
-                    mp,tl = loadmap("testmap",tl)
+                    mp = loadmap("testmap",tiles)
                     e = time.time()
                     print("Loading took {} ms".format(e-s))
         clock.tick(maxfps)
