@@ -109,11 +109,9 @@ cdef loadmap(mapname,ltiles={}):
 
 cdef lookuptile(arr,tiles):
     for i in tiles:
-        print(i)
-        print(tiles[i])
         if numpy.array_equal(tiletonparray(tiles[i]),arr):
             return i
-    return i
+    raise ValueError("Tile not found")
 
 cdef savemap(map,filename,ltiles):
     tiles = []
