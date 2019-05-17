@@ -147,6 +147,7 @@ cdef gettileatcords(x,y,size,map):
     return map[y][x]
 DEF mode = "mapmake" # What mode are we in? Are we making maps or playing the game?
 # @todo finish adding all of the properties of tiles
+# @todo make more tiles
 cpdef makedefaulttiles(tilesize):
     tilesize = (tilesize,tilesize)
     blacktile = pygame.Surface(tilesize)
