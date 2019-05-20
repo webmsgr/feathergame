@@ -6,7 +6,7 @@ import numpy
 def install(package):
     subprocess.call([sys.executable, "-m", "pip", "install", package])
 install("Flask")
-subprocess.call(["cython","game.pyx","--include_dir",numpy.get_include()])
+subprocess.call(["cython","game.pyx","-3","--include-dir",numpy.get_include()])
 from flask import Flask,redirect
 import os
 
