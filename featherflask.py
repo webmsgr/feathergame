@@ -1,11 +1,12 @@
 # Used for heroku as a flask app
 import subprocess
 import sys
+import numpy
 
 def install(package):
     subprocess.call([sys.executable, "-m", "pip", "install", package])
 install("Flask")
-subprocess.call(["cythonize","game.pyx"])
+subprocess.call(["cython","game.pyx","--include_dir",numpy.get_include()])
 from flask import Flask,redirect
 import os
 
