@@ -5,6 +5,7 @@ import sys
 def install(package):
     subprocess.call([sys.executable, "-m", "pip", "install", package])
 install("Flask")
+subprocess.call(["cythonize","game.pyx"])
 from flask import Flask,redirect
 import os
 
