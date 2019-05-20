@@ -1,2 +1,2 @@
-release: ./build.sh
+release: ./buildheroku.sh
 web: python featherflask.py
