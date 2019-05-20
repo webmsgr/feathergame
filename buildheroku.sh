@@ -1,2 +1,2 @@
 cythonize game.pyx
-[ -f *.so ]
+[ -f *.c ]
