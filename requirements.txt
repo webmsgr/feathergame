@@ -3,4 +3,5 @@ pygame
 numpy
 Pillow
 cyrandom
-${flask}
+# allows for heroku to install flask
+${FLASK}
