@@ -6,8 +6,10 @@ from hashlib import md5
 def install(package):
     subprocess.call([sys.executable, "-m", "pip", "install", package])
 def hashie(text):
+    global hashies
     r = md5(text.encode())
     return r.hexdigest()
+
 install("Flask")
 subprocess.call(["cython","game.pyx","-3","--include-dir",numpy.get_include()])
 from flask import Flask,redirect
