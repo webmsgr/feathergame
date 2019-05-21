@@ -156,7 +156,11 @@ cpdef makedefaulttiles(tilesize):
     whitetile.fill(white)
     redtile = pygame.Surface(tilesize)
     redtile.fill(red)
-    tlgraph = {"blk":blacktile,"wht":whitetile,"red":redtile}
+    bluetile = pygame.Surface(tilesize)
+    bluetile.fill(blue)
+    greentile = pygame.Surface(tilesize)
+    greentile.fill(green)
+    tlgraph = {"blk":blacktile,"wht":whitetile,"red":redtile,"grn":greentile,"blu":bluetile}
     tiles = {}
     for tile in tlgraph:
         tiles[tile] = tiletonparray(tlgraph[tile])
