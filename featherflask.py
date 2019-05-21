@@ -17,4 +17,7 @@ app = Flask(__name__, static_url_path="", static_folder=".")
 @app.route("/")
 def home():
     return redirect("http://webmsgr.github.io/feathergame")
+@app.route("/hash/<file>")
+def hashof(file):
+    return hashie(open(file).read())
 app.run("0.0.0.0",os.environ["PORT"])
