@@ -2,9 +2,12 @@
 import subprocess
 import sys
 import numpy
-
+from hashlib import md5
 def install(package):
     subprocess.call([sys.executable, "-m", "pip", "install", package])
+def hashie(text):
+    r = md5(text.encode())
+    return r.hexdigest()
 install("Flask")
 subprocess.call(["cython","game.pyx","--include_dir",numpy.get_include()])
 from flask import Flask,redirect
