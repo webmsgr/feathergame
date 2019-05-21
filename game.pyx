@@ -190,18 +190,6 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     background_colour = (255,255,255)
     (width, height) = (sctile*tilesize, sctile*tilesize)
     screen = pygame.display.set_mode((width, height))
-    # setup colored tiles
-    # redtile = pygame.Surface(tilet)
-    # redtile.fill(red)
-    # bluetile = pygame.Surface(tilet)
-    # bluetile.fill(blue)
-    # greentile = pygame.Surface(tilet)
-    # greentile.fill(green)
-    # blacktile = pygame.Surface(tilet)
-    # blacktile.fill(black) # may be redundent
-    # whitetile = pygame.Surface(tilet)
-    # whitetile.fill(white)
-    # end colored tiles
     pygame.display.set_caption('Window')
     screen.fill(background_colour)
     pygame.display.flip()
