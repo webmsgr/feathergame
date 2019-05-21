@@ -131,7 +131,6 @@ cdef savemap(map,filename,ltiles):
                 new[y][x] = tiles.index(tl)
     numpy.savez(filename, tiles=tiles, map=new)
 
-
 cdef randmap(size,tiles):
     cdef int x,y
     out = []
