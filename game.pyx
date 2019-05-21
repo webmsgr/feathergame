@@ -165,7 +165,7 @@ cpdef makedefaulttiles(tilesize):
         tiles[tile] = tiletonparray(tlgraph[tile])
     numpy.savez("tiles.npz",**tiles)
 
-   # @todo add loadtile function
+
 cdef loadtiles():
     tiles = numpy.load("tiles.npz")
     nt = {}
