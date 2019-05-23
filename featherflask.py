@@ -16,10 +16,17 @@ from flask import Flask,redirect
 import os
 
 app = Flask(__name__, static_url_path="", static_folder=".")
+
+
 @app.route("/")
 def home():
+    """redirect to home site"""
     return redirect("http://webmsgr.github.io/feathergame")
+
+
 @app.route("/hash/<file>")
 def hashof(file):
+    """Hash of file"""
     return hashie(open(file).read())
+
 app.run("0.0.0.0",os.environ["PORT"])
