@@ -172,6 +172,9 @@ cdef loadtiles():
     for tile in names:
         nt[tile] = nparraytotile(tiles[tile])
     return nt
+
+    # @todo Add tile switcher to use more tiles
+    # @body black and white is old school, add a keybind that switches the current tile
 cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     """Main Game"""
     cdef (int,int) tilet = (tilesize,tilesize)
