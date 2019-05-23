@@ -218,6 +218,8 @@ cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
                 mx,my = event.pos
                 mtx,mty = ctile(mx,my,tilesize)
             if event.type == MOUSEBUTTONDOWN:
+                mx,my = event.pos
+                mtx,mty = ctile(mx,my,tilesize)
                 try:
                     button = {3:"right",1:"left"}[event.button]
                 except KeyError:
