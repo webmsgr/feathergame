@@ -18,7 +18,6 @@ import numpy
 import os
 import time
 cimport numpy
-from PIL import Image
 from copy import deepcopy,copy
 from pygame.locals import QUIT,MOUSEMOTION,MOUSEBUTTONDOWN, KEYDOWN
 from pygame import K_s,K_l

@@ -1,6 +1,6 @@
 
 
-# feathergame 
+# feathergame
 A rpg written in python
 
 # Builds
@@ -13,7 +13,6 @@ This project requires
 + Cython
 + pygame
 + numpy
-+ Pillow _(Working on removing this dependancy)_
 + cyrandom
 
 ## Cloning
@@ -28,10 +27,10 @@ pip install -r requirements.txt
 ## Anything but windows
 Simply run run.sh or build.sh if you dont want the game to autostart
 ## Windows
-Build the game using 
+Build the game using
 ```
 py -3 build.py build_ext --inplace
-``` 
+```
 then run Feathergame.py
 
 # Gitpod
