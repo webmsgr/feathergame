@@ -33,6 +33,9 @@ py -3 build.py build_ext --inplace
 ```
 then run Feathergame.py
 
+# Command Line Args
+Use `FeatherGame.py -h` to see usage
+
 # Gitpod
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/webmsgr/feathergame)
 
