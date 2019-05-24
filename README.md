@@ -48,7 +48,7 @@ To export a tile use
 `tileeditor.py --export tile --to tile.png` to export the tile 'tile' to tile.png
 
 ## Other Commands:
-see 'tileediter.py -h'
+see `tileediter.py -h`
 
 
 # To contribute
