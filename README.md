@@ -35,9 +35,21 @@ then run Feathergame.py
 
 # Command Line Args
 Use `FeatherGame.py -h` to see usage
-
 # Gitpod
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/webmsgr/feathergame)
+# Making tiles
+**Currently Not Implemented**
+## Image to tile
+To make a tile, get a 16x16 image for the tile, and use
+'tileediter.py --import image.png --to image'
+This will import image.png to a tile called image
+## Tile to image
+To export a tile use
+'tileeditor.py --export tile --to tile.png' to export the tile "tile" to tile.png
+
+## Other Commands:
+see 'tileediter.py -h'
+
 
 # To contribute
 To contribute, fork the repo and add your changes. Then submit a pull request.
