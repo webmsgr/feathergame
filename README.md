@@ -5,6 +5,9 @@ A rpg written in python
 
 # Builds
 [![Build Status](https://semaphoreci.com/api/v1/webmsgr/feathergame/branches/master/badge.svg)](https://semaphoreci.com/webmsgr/feathergame) [![CircleCI](https://circleci.com/gh/webmsgr/feathergame.svg?style=svg)](https://circleci.com/gh/webmsgr/feathergame)
+# Deploys
+The latest deployed files can be found here:
+[game.c](http://feathergame.herokuapp.com/game.c)
 
 # Requirements
 This project requires
