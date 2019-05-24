@@ -175,6 +175,8 @@ cdef loadtiles():
 
     # @todo Add tile switcher to use more tiles
     # @body black and white is old school, add a keybind that switches the current tile
+    # @todo Add Tile Cursor
+    # @body show the selected tile at 50% opacity at mouse location (mtx,mty)
 cpdef main(int maxfps = 60,int sctile = 32,int tilesize = 16):
     """Main Game"""
     cdef (int,int) tilet = (tilesize,tilesize)
