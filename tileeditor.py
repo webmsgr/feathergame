@@ -2,7 +2,7 @@
 # @todo make tile editor
 import numpy
 from PIL import Image
-
+import struct
 def convert(tiledata):
     print(tiledata.shape)
     new = []
@@ -35,12 +35,11 @@ def savetiles(tilefile,tiles):
                 r,g,b = tiledata.getpixel((x,y))
                 # @todo fix tile saving.
                 # @body the first row is fine,but the others are strange
-                r = r << 2*8
-                g = g << 1*8
-                newrgb = r + g + b
-                nrow.append(newrgb)
+                newrgb = struct.pack(">BBB",r,g,b)
+                nrow.append(int.from_bytes(newrgb,"big"))
             ntile.append(nrow)
         ntile = numpy.array(ntile)
         print(ntile)
         newtiles[tilename] = ntile
 
+print(savetiles("",loadtiles("tiles.npz")))
