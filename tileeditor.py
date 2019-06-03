@@ -3,8 +3,9 @@
 import numpy
 from PIL import Image
 import struct
+import argparse
+import sys
 def convert(tiledata):
-    print(tiledata.shape)
     new = []
     for x in range(tiledata.shape[0]):
         newrow = []
@@ -41,5 +42,31 @@ def savetiles(tilefile,tiles):
         ntile = numpy.array(ntile)
         print(ntile)
         newtiles[tilename] = ntile
+parser = argparse.ArgumentParser(description="Tile editor")
+parser.add_argument("--tilefile",default="tiles.npz")
+actionGroup = parser.add_mutually_exclusive_group()
+actionGroup.add_argument("-i","--importimage",metavar="inputfile")
+actionGroup.add_argument("-x","--exporttile",metavar="tile")
+actionGroup.add_argument("-l","--list",action="store_true")
+parser.add_argument("--totile", required="-i" in sys.argv)
+parser.add_argument("--tofile", required="-x" in sys.argv)
+out = parser.parse_args()
+if not out.importimage and not out.exporttile and not out.list:
+    parser.error("-i or -x or -l is required")
+#if out.importimage and not out.totile:
+#    parser.error("-i requires --totile")
+#if out.exporttile and not out.tofile:
+#    parser.error("-x requires --tofile")
 
-print(savetiles("",loadtiles("tiles.npz")))
+print("Loading tile file...",end=" ")
+tiles = loadtiles(out.tilefile)
+print("Done")
+if out.list:
+    print("Tiles:")
+    i = 0
+    for tile in tiles:
+        print(tile)
+        i += 1
+    print("Found {} tiles".format(i))
+
+#print(savetiles("",loadtiles("tiles.npz")))
