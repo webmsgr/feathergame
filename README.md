@@ -20,6 +20,10 @@ This project requires
 + numpy
 + cyrandom
 
+the tileeditor requires
++ python3
++ numpy
++ Pillow
 ## Cloning
 ```
 git clone https://github.com/webmsgr/feathergame.git
