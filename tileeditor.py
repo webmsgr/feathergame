@@ -59,12 +59,12 @@ def savetiles(tilefile,tiles):
 
 
 parser = argparse.ArgumentParser(description="Tile editor")
-parser.add_argument("--tilefile",default="tiles.npz")
+parser.add_argument("--tilefile",default="tiles.npz",help="The tile file to use")
 actionGroup = parser.add_mutually_exclusive_group()
-actionGroup.add_argument("-i","--importimage",metavar="inputfile")
-actionGroup.add_argument("-x","--exporttile",metavar="tile")
-actionGroup.add_argument("-l","--list",action="store_true")
-parser.add_argument("-to", required="-i" in sys.argv or "-x" in sys.argv, metavar="file/tile")
+actionGroup.add_argument("-i","--importimage",metavar="inputfile",help="Image to tile")
+actionGroup.add_argument("-x","--exporttile",metavar="tile",help="Tile to image")
+actionGroup.add_argument("-l","--list",action="store_true",help="List all tiles")
+parser.add_argument("-to",help="destination",required="-i" in sys.argv or "-x" in sys.argv, metavar="file/tile")
 out = parser.parse_args()
 if not out.importimage and not out.exporttile and not out.list:
     parser.error("-i or -x or -l is required")
