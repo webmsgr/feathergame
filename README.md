@@ -10,7 +10,7 @@ The latest deployed files can be found here:
 + [game.c](http://feathergame.herokuapp.com/game.c)
 + [game.pyx](http://feathergame.herokuapp.com/game.pyx)
 + [game.html](http://feathergame.herokuapp.com/game.html)
-
++ [tiles.npz](http://feathergame.herokuapp.com/tiles.npz)
 # Requirements
 This project requires
 
