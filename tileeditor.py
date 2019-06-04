@@ -48,7 +48,7 @@ def savetiles(tilefile,tiles):
             y = 0
             nrow = []
             for row in col:
-                nrow.append(int.from_bytes(struct.pack(">BBB",ntilearray[x][y][0],ntilearray[x][y][1],ntilearray[x][y][2]),"big"))
+                nrow.append(int.from_bytes(struct.pack(">BBB",row[0],row[1],row[2]),"big"))
                 y += 1
             x += 1
             nntile.append(nrow)
