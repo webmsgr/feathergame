@@ -5,6 +5,7 @@ from PIL import Image
 import struct
 import argparse
 import sys
+import os
 def convert(tiledata):
     new = []
     for x in range(tiledata.shape[0]):
@@ -26,31 +27,37 @@ def convert(tiledata):
     return i
 def loadtiles(tilefile):
     out = {}
-    with numpy.load(tilefile) as i:
-        for file in i.files:
-            out[file] = convert(i[file])
-    return out
+    try:
+        with numpy.load(tilefile) as i:
+            for file in i.files:
+                out[file] = convert(i[file])
+        return out
+    except FileNotFoundError:
+        return {}
 
 def savetiles(tilefile,tiles):
     newtiles = {}
     for tile in tiles:
         tilename = tile
         tile = tiles[tile]
-        tiledata = tile.convert()
-        size = tile.size
-        ntile = []
-        for x in range(size[0]):
+        ntile = numpy.array(tile)
+        ntilearray = ntile.tolist()
+        nntile = []
+        x = 0
+        for col in ntilearray:
+            y = 0
             nrow = []
-            for y in range(size[1]):
-                r,g,b = tiledata.getpixel((x,y))
-                # @todo fix tile saving.
-                # @body the first row is fine,but the others are strange
-                newrgb = struct.pack(">BBB",r,g,b)
-                nrow.append(int.from_bytes(newrgb,"big"))
-            ntile.append(nrow)
-        ntile = numpy.array(ntile)
-        print(ntile)
+            for row in col:
+                nrow.append(int.from_bytes(struct.pack(">BBB",ntilearray[x][y][0],ntilearray[x][y][1],ntilearray[x][y][2]),"big"))
+                y += 1
+            x += 1
+            nntile.append(nrow)
+        ntile = numpy.array(nntile,numpy.int32)
         newtiles[tilename] = ntile
+    print(newtiles)
+    numpy.savez(tilefile,**newtiles)
+
+
 parser = argparse.ArgumentParser(description="Tile editor")
 parser.add_argument("--tilefile",default="tiles.npz")
 actionGroup = parser.add_mutually_exclusive_group()
@@ -80,10 +87,30 @@ if out.exporttile:
     tile = out.exporttile
     if not tile in tiles:
         print("Tile not found!")
+        sys.exit(1)
     else:
         tile = tiles[tile]
         print("Exporting...",end=" ")
         tile.save(out.to)
         print("Done!")
-
+if out.importimage:
+    if os.path.exists(out.importimage):
+        image = Image.open(out.importimage)
+        if out.to in tiles:
+            print("Tile exists! Overwrite?")
+            override = input("y/n?")
+            if override in ["y","Y","yes"]:
+                print("Overwriting...")
+            elif override in ["n","N","no"]:
+                print("Cancled")
+                sys.exit(1)
+            else:
+                print("unknown option...")
+                sys.exit(1)
+        print("Adding tile...",end=" ")
+        tiles[out.to] = image
+        savetiles(out.tilefile,tiles)
+        print("Done!")
+    else:
+        print("File not found!")
 #print(savetiles("",loadtiles("tiles.npz")))
