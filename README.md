@@ -49,11 +49,11 @@ Use `FeatherGame.py -h` to see usage
 # Making tiles
 ## Image to tile
 To make a tile, get a 16x16 image for the tile, and use
-`tileediter.py --importimage image.png --to image`
+`tileediter.py -i image.png -to image`
 This will import image.png to a tile called image
 ## Tile to image
 To export a tile use
-`tileeditor.py --exporttile tile --to tile.png` to export the tile 'tile' to tile.png
+`tileeditor.py -x tile -to tile.png` to export the tile 'tile' to tile.png
 
 ## Other Commands:
 see `tileediter.py -h`

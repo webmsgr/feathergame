@@ -6,6 +6,14 @@ import struct
 import argparse
 import sys
 import os
+def extracttofolder(tile,folder,name,ext="png"):
+    try:
+        os.mkdir(folder)
+    except:
+        pass
+    tile.save("./{}/{}.{}".format(folder,name,ext))
+
+
 def convert(tiledata):
     new = []
     for x in range(tiledata.shape[0]):
@@ -61,13 +69,14 @@ def savetiles(tilefile,tiles):
 parser = argparse.ArgumentParser(description="Tile editor")
 parser.add_argument("--tilefile",default="tiles.npz",help="The tile file to use")
 actionGroup = parser.add_mutually_exclusive_group()
-actionGroup.add_argument("-i","--importimage",metavar="inputfile",help="Image to tile")
-actionGroup.add_argument("-x","--exporttile",metavar="tile",help="Tile to image")
-actionGroup.add_argument("-l","--list",action="store_true",help="List all tiles")
-parser.add_argument("-to",help="destination",required="-i" in sys.argv or "-x" in sys.argv, metavar="file/tile")
+actionGroup.add_argument("-i",metavar="inputfile",help="Image to tile",dest="importimage")
+actionGroup.add_argument("-x",metavar="tile",help="Tile to image",dest="exporttile")
+actionGroup.add_argument("-l",action="store_true",help="List all tiles",dest="list")
+actionGroup.add_argument("-xa",action="store_true",help="export all tiles to a folder",dest="exportall")
+parser.add_argument("-to",help="destination",required="-xa" in sys.argv or "-i" in sys.argv or "-x" in sys.argv, metavar="file/tile")
 out = parser.parse_args()
-if not out.importimage and not out.exporttile and not out.list:
-    parser.error("-i or -x or -l is required")
+if not out.importimage and not out.exporttile and not out.list and not out.exportall:
+    parser.error("-i or -x or -l or -xa is required")
 #if out.importimage and not out.totile:
 #    parser.error("-i requires --totile")
 #if out.exporttile and not out.tofile:
@@ -113,4 +122,11 @@ if out.importimage:
         print("Done!")
     else:
         print("File not found!")
+if out.exportall:
+    folder = out.to
+    for tile in tiles:
+        tilename = tile
+        tile = tiles[tile]
+        print("Exporting {}...".format(tilename))
+        extracttofolder(tile,folder,tilename)
 #print(savetiles("",loadtiles("tiles.npz")))
