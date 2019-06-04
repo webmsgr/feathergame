@@ -62,7 +62,7 @@ def savetiles(tilefile,tiles):
             nntile.append(nrow)
         ntile = numpy.array(nntile,numpy.int32)
         newtiles[tilename] = ntile
-    numpy.savez(tilefile,**newtiles)
+    numpy.savez_compressed(tilefile,**newtiles)
 
 
 parser = argparse.ArgumentParser(description="Tile editor")
