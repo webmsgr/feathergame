@@ -62,7 +62,6 @@ def savetiles(tilefile,tiles):
             nntile.append(nrow)
         ntile = numpy.array(nntile,numpy.int32)
         newtiles[tilename] = ntile
-    print(newtiles)
     numpy.savez(tilefile,**newtiles)
 
 
@@ -73,10 +72,11 @@ actionGroup.add_argument("-i",metavar="inputfile",help="Image to tile",dest="imp
 actionGroup.add_argument("-x",metavar="tile",help="Tile to image",dest="exporttile")
 actionGroup.add_argument("-l",action="store_true",help="List all tiles",dest="list")
 actionGroup.add_argument("-xa",action="store_true",help="export all tiles to a folder",dest="exportall")
+actionGroup.add_argument("-ia",help="import all from folder",metavar="folder",dest="importall")
 parser.add_argument("-to",help="destination",required="-xa" in sys.argv or "-i" in sys.argv or "-x" in sys.argv, metavar="file/tile")
 out = parser.parse_args()
-if not out.importimage and not out.exporttile and not out.list and not out.exportall:
-    parser.error("-i or -x or -l or -xa is required")
+if not out.importimage and not out.exporttile and not out.list and not out.exportall and not out.importall:
+    parser.error("-i or -x or -l or -xa or -ia required")
 #if out.importimage and not out.totile:
 #    parser.error("-i requires --totile")
 #if out.exporttile and not out.tofile:
@@ -129,4 +129,18 @@ if out.exportall:
         tile = tiles[tile]
         print("Exporting {}...".format(tilename))
         extracttofolder(tile,folder,tilename)
+if out.importall:
+    folder = out.importall
+    newtiles = {}
+    print("Importing")
+    for tile in os.listdir("./{}/".format(folder)):
+        tilename = tile.split(".")[0]
+        print("Importing {}...".format(tilename))
+        tile = Image.open("./{}/{}".format(folder,tile))
+        newtiles[tilename] = tile
+    tiles = newtiles
+    print("Saving")
+    savetiles(out.tilefile,tiles)
+
+
 #print(savetiles("",loadtiles("tiles.npz")))
