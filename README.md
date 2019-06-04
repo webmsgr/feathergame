@@ -47,7 +47,6 @@ Use `FeatherGame.py -h` to see usage
 # Gitpod
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/webmsgr/feathergame)
 # Making tiles
-**Currently Not Implemented**
 ## Image to tile
 To make a tile, get a 16x16 image for the tile, and use
 `tileediter.py --importimage image.png --to image`
